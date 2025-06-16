@@ -16,6 +16,25 @@ mvn clean compile
 mvn test
 ```
 
+## Docker Containerization
+
+You can containerize the project using Docker for easy deployment.
+
+### Build the Docker Image
+
+Run this command in your project folder:
+
+```bash
+docker build -t inmem-fs-cli .
+````
+
+Run the Container
+
+To start the CLI interactively inside the container:
+```bash
+docker run -it inmem-fs-cli
+```
+
 ## What This Demonstrates
 
 This project showcases:
@@ -25,6 +44,40 @@ This project showcases:
 - **Clean Architecture** (layered structure with `api` / `entities` / `containers` packages)
 - **Comprehensive Testing** (unit tests with nearly 100% coverage)
 - **Error Handling** (validation and exception management)
+
+## CLI Usage
+
+This project includes a simple command-line interface (CLI) for interacting with the file system.
+
+### Launch the CLI
+
+After compiling, run the CLI with:
+
+```bash
+java -cp target/classes filesystem.FilesystemCLI
+```
+
+### CLI Commands
+
+- `create <type> <name> <parent_path>` — Create an entity (Drive, Folder, TextFile, ZipFile)
+- `delete <path>` — Delete an entity
+- `move <source_path> <dest_path>` — Move an entity
+- `write <path> <content>` — Write content to a text file
+- `read <path>` — Read and display text file content
+- `find <path>` — Show information about an entity
+- `help` — Show help message
+- `exit` — Exit the CLI
+
+### Examples
+
+```
+create Drive C null
+create Folder Documents C
+create TextFile note.txt C\Documents
+write C\Documents\note.txt Hello World!
+read C\Documents\note.txt
+find C\Documents\note.txt
+```
 
 ## Core API Usage
 
@@ -60,8 +113,8 @@ mvn test
 
 **Test structure:**
 
-- **Entity creation** — ```FileSystemCreateOperationsTest```
-- **Deletion operations** — ```FileSystemDeleteOperationsTest```
+- **Entity creation** — `FileSystemCreateOperationsTest`
+- **Deletion operations** — `FileSystemDeleteOperationsTest`
 - **Move operations** — `FileSystemMoveOperationsTest`
 - **File content operations** — `FileSystemWriteOperationsTest`
 - **Complex scenarios and edge cases** — `FileSystemIntegrationTest`
@@ -73,6 +126,7 @@ filesystem/
 ├── api/           # FileSystem (main API) + FileSystemEntity (base class)
 ├── entities/      # Drive, Folder, TextFile, ZipFile  
 ├── containers/    # Container interface + AbstractContainer
+├── FilesystemCLI  # CLI entry point
 └── tests/         # Comprehensive test suite
 ```
 
@@ -84,7 +138,7 @@ filesystem/
 - **Validation**: Name validation, duplicate prevention
 - **Hierarchy**: Parent-child relationships with automatic path generation
 
-## Constraints
+## ⚠️ Constraints
 
 - **Names**: Alphanumeric only (`file123.txt` ✅, `my file.txt` ❌)
 - **Containers**: Only Drives, Folders, and ZipFiles can contain other entities
