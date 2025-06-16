@@ -1,4 +1,10 @@
-package filesystem;
+package filesystem.api;
+
+import filesystem.containers.Container;
+import filesystem.entities.Drive;
+import filesystem.entities.Folder;
+import filesystem.entities.TextFile;
+import filesystem.entities.ZipFile;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -79,7 +85,9 @@ public class FileSystem {
         // Remove from old parent
         String sourceParentPath = getParentPath(sourcePath);
         Container sourceParent = getContainerAtPath(sourceParentPath);
-        sourceParent.removeEntity(sourceName);
+        if (sourceParent != null) {
+            sourceParent.removeEntity(sourceName);
+        }
 
         // Add to new parent
         destParent.addEntity(source);

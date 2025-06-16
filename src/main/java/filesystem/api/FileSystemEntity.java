@@ -1,4 +1,4 @@
-package filesystem;
+package filesystem.api;
 
 public abstract class FileSystemEntity {
     private final String name;

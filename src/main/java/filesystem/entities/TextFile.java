@@ -1,4 +1,6 @@
-package filesystem;
+package filesystem.entities;
+
+import filesystem.api.FileSystemEntity;
 
 public class TextFile extends FileSystemEntity {
     private String content;

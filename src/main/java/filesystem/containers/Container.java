@@ -1,4 +1,6 @@
-package filesystem;
+package filesystem.containers;
+
+import filesystem.api.FileSystemEntity;
 
 import java.util.Collection;
 
