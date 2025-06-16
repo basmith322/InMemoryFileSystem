@@ -31,6 +31,7 @@ docker build -t inmem-fs-cli .
 Run the Container
 
 To start the CLI interactively inside the container:
+
 ```bash
 docker run -it inmem-fs-cli
 ```
