@@ -10,15 +10,15 @@ public class FileSystemDeleteOperationsTest extends BaseFileSystemTest {
 
     @Test
     void deleteDrive_shouldSucceed() {
-        fs.create("Drive", "C", null);
+        createBasicStructure();
         fs.delete("C");
         assertNull(fs.findDrive("C"));
     }
 
     @Test
     void deleteFolder_shouldSucceed() {
-        fs.create("Drive", "C", null);
-        fs.create("Folder", "Documents", "C");
+        createBasicStructure();
+        
         fs.delete("C\\Documents");
 
         Drive drive = fs.findDrive("C");
@@ -27,8 +27,8 @@ public class FileSystemDeleteOperationsTest extends BaseFileSystemTest {
 
     @Test
     void deleteFolder_withContents_shouldSucceed() {
-        fs.create("Drive", "C", null);
-        fs.create("Folder", "Documents", "C");
+        createBasicStructure();
+        
         fs.create("TextFile", "note.txt", "C\\Documents");
         fs.delete("C\\Documents");
 
@@ -37,7 +37,7 @@ public class FileSystemDeleteOperationsTest extends BaseFileSystemTest {
 
     @Test
     void delete_nonexistentPath_shouldThrowException() {
-        fs.create("Drive", "C", null);
+        createBasicStructure();
         assertThrows(IllegalArgumentException.class,
                 () -> fs.delete("C\\NonExistent"));
     }

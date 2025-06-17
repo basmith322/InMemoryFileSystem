@@ -18,8 +18,8 @@ public class FileSystemIntegrationTest extends BaseFileSystemTest {
     class PathTests {
         @Test
         void verifyPath_forNestedEntities() {
-            fs.create("Drive", "C", null);
-            fs.create("Folder", "Documents", "C");
+            createBasicStructure();
+            
             fs.create("Folder", "Work", "C\\Documents");
             fs.create("TextFile", "note.txt", "C\\Documents\\Work");
 
@@ -29,8 +29,8 @@ public class FileSystemIntegrationTest extends BaseFileSystemTest {
 
         @Test
         void verifyPath_afterMove() {
-            fs.create("Drive", "C", null);
-            fs.create("Folder", "Documents", "C");
+            createBasicStructure();
+            
             fs.create("TextFile", "note.txt", "C\\Documents");
             fs.create("Folder", "Backup", "C");
 
@@ -45,7 +45,7 @@ public class FileSystemIntegrationTest extends BaseFileSystemTest {
     class ValidationTests {
         @Test
         void create_withNonAlphanumericName_shouldThrowException() {
-            fs.create("Drive", "C", null);
+            createBasicStructure();
 
             assertThrows(IllegalArgumentException.class,
                     () -> fs.create("Folder", "My Documents!", "C"));
@@ -53,7 +53,7 @@ public class FileSystemIntegrationTest extends BaseFileSystemTest {
 
         @Test
         void create_withInvalidType_shouldThrowException() {
-            fs.create("Drive", "C", null);
+            createBasicStructure();
 
             assertThrows(IllegalArgumentException.class,
                     () -> fs.create("InvalidType", "test", "C"));
@@ -64,8 +64,8 @@ public class FileSystemIntegrationTest extends BaseFileSystemTest {
     class ContainerInterfaceTests {
         @Test
         void container_addEntity_shouldSetParent() {
-            fs.create("Drive", "C", null);
-            fs.create("Folder", "Documents", "C");
+            createBasicStructure();
+            
 
             Drive drive = fs.findDrive("C");
             Folder folder = (Folder) drive.getEntity("Documents");
@@ -75,8 +75,8 @@ public class FileSystemIntegrationTest extends BaseFileSystemTest {
 
         @Test
         void container_removeEntity_shouldClearParent() {
-            fs.create("Drive", "C", null);
-            fs.create("Folder", "Documents", "C");
+            createBasicStructure();
+            
 
             Drive drive = fs.findDrive("C");
             Folder folder = (Folder) drive.getEntity("Documents");
@@ -87,8 +87,8 @@ public class FileSystemIntegrationTest extends BaseFileSystemTest {
 
         @Test
         void container_getContents_shouldReturnAllEntities() {
-            fs.create("Drive", "C", null);
-            fs.create("Folder", "Documents", "C");
+            createBasicStructure();
+            
             fs.create("TextFile", "note.txt", "C");
             fs.create("ZipFile", "archive.zip", "C");
 
@@ -100,8 +100,8 @@ public class FileSystemIntegrationTest extends BaseFileSystemTest {
 
         @Test
         void container_hasEntity_shouldReturnCorrectBoolean() {
-            fs.create("Drive", "C", null);
-            fs.create("Folder", "Documents", "C");
+            createBasicStructure();
+            
 
             Drive drive = fs.findDrive("C");
 
@@ -114,8 +114,8 @@ public class FileSystemIntegrationTest extends BaseFileSystemTest {
     class EntityPropertiesTests {
         @Test
         void entity_getName_shouldReturnCorrectName() {
-            fs.create("Drive", "C", null);
-            fs.create("Folder", "Documents", "C");
+            createBasicStructure();
+            
 
             FileSystemEntity folder = fs.findEntity("C\\Documents");
             assertEquals("Documents", folder.getName());
@@ -123,7 +123,7 @@ public class FileSystemIntegrationTest extends BaseFileSystemTest {
 
         @Test
         void entity_getType_shouldReturnCorrectType() {
-            fs.create("Drive", "C", null);
+            createBasicStructure();
             fs.create("ZipFile", "archive.zip", "C");
 
             FileSystemEntity zipFile = fs.findEntity("C\\archive.zip");
@@ -132,8 +132,8 @@ public class FileSystemIntegrationTest extends BaseFileSystemTest {
 
         @Test
         void entity_getParent_shouldReturnCorrectParent() {
-            fs.create("Drive", "C", null);
-            fs.create("Folder", "Documents", "C");
+            createBasicStructure();
+            
 
             Drive drive = fs.findDrive("C");
             FileSystemEntity folder = fs.findEntity("C\\Documents");
@@ -143,7 +143,7 @@ public class FileSystemIntegrationTest extends BaseFileSystemTest {
 
         @Test
         void drive_getParent_shouldReturnNull() {
-            fs.create("Drive", "C", null);
+            createBasicStructure();
 
             Drive drive = fs.findDrive("C");
             assertNull(drive.getParent());
@@ -154,7 +154,7 @@ public class FileSystemIntegrationTest extends BaseFileSystemTest {
     class TextFileContentTests {
         @Test
         void textFile_initialContent_shouldBeEmpty() {
-            fs.create("Drive", "C", null);
+            createBasicStructure();
             fs.create("TextFile", "note.txt", "C");
 
             TextFile file = (TextFile) fs.findEntity("C\\note.txt");
@@ -163,7 +163,7 @@ public class FileSystemIntegrationTest extends BaseFileSystemTest {
 
         @Test
         void textFile_setContent_shouldUpdateContent() {
-            fs.create("Drive", "C", null);
+            createBasicStructure();
             fs.create("TextFile", "note.txt", "C");
 
             TextFile file = (TextFile) fs.findEntity("C\\note.txt");
@@ -174,7 +174,7 @@ public class FileSystemIntegrationTest extends BaseFileSystemTest {
 
         @Test
         void writeToFile_multipleWrites_shouldOverwriteContent() {
-            fs.create("Drive", "C", null);
+            createBasicStructure();
             fs.create("TextFile", "note.txt", "C");
 
             fs.writeToFile("C\\note.txt", "First content");
@@ -189,7 +189,7 @@ public class FileSystemIntegrationTest extends BaseFileSystemTest {
     class ComplexScenarioTests {
         @Test
         void createNestedStructure_shouldMaintainCorrectPaths() {
-            fs.create("Drive", "C", null);
+            createBasicStructure();
             fs.create("Folder", "Users", "C");
             fs.create("Folder", "John", "C\\Users");
             fs.create("Folder", "Documents", "C\\Users\\John");
@@ -201,7 +201,7 @@ public class FileSystemIntegrationTest extends BaseFileSystemTest {
 
         @Test
         void moveFolder_withNestedContents_shouldUpdateAllPaths() {
-            fs.create("Drive", "C", null);
+            createBasicStructure();
             fs.create("Drive", "D", null);
             fs.create("Folder", "Project", "C");
             fs.create("Folder", "src", "C\\Project");
@@ -215,7 +215,7 @@ public class FileSystemIntegrationTest extends BaseFileSystemTest {
 
         @Test
         void zipFile_canContainOtherEntities() {
-            fs.create("Drive", "C", null);
+            createBasicStructure();
             fs.create("ZipFile", "backup.zip", "C");
             fs.create("TextFile", "data.txt", "C\\backup.zip");
             fs.create("Folder", "images", "C\\backup.zip");
@@ -228,7 +228,7 @@ public class FileSystemIntegrationTest extends BaseFileSystemTest {
 
         @Test
         void delete_driveWithComplexStructure_shouldRemoveEverything() {
-            fs.create("Drive", "C", null);
+            createBasicStructure();
             fs.create("Folder", "Users", "C");
             fs.create("Folder", "John", "C\\Users");
             fs.create("TextFile", "file1.txt", "C\\Users\\John");
@@ -265,8 +265,8 @@ public class FileSystemIntegrationTest extends BaseFileSystemTest {
 
         @Test
         void move_entityToSameLocation_shouldThrowException() {
-            fs.create("Drive", "C", null);
-            fs.create("Folder", "Documents", "C");
+            createBasicStructure();
+            
             fs.create("TextFile", "note.txt", "C\\Documents");
 
             assertThrows(IllegalArgumentException.class,
@@ -284,7 +284,7 @@ public class FileSystemIntegrationTest extends BaseFileSystemTest {
     class NameValidationTests {
         @Test
         void create_withExtension_shouldSucceed() {
-            fs.create("Drive", "C", null);
+            createBasicStructure();
             fs.create("TextFile", "document.txt", "C");
 
             assertNotNull(fs.findEntity("C\\document.txt"));
@@ -292,7 +292,7 @@ public class FileSystemIntegrationTest extends BaseFileSystemTest {
 
         @Test
         void create_withNumericName_shouldSucceed() {
-            fs.create("Drive", "C", null);
+            createBasicStructure();
             fs.create("Folder", "123", "C");
 
             assertNotNull(fs.findEntity("C\\123"));
@@ -300,7 +300,7 @@ public class FileSystemIntegrationTest extends BaseFileSystemTest {
 
         @Test
         void create_withMixedAlphanumeric_shouldSucceed() {
-            fs.create("Drive", "C", null);
+            createBasicStructure();
             fs.create("Folder", "test123", "C");
 
             assertNotNull(fs.findEntity("C\\test123"));
@@ -308,7 +308,7 @@ public class FileSystemIntegrationTest extends BaseFileSystemTest {
 
         @Test
         void create_withSpaces_shouldThrowException() {
-            fs.create("Drive", "C", null);
+            createBasicStructure();
 
             assertThrows(IllegalArgumentException.class,
                     () -> fs.create("Folder", "My Folder", "C"));
@@ -316,7 +316,7 @@ public class FileSystemIntegrationTest extends BaseFileSystemTest {
 
         @Test
         void create_withSpecialCharacters_shouldThrowException() {
-            fs.create("Drive", "C", null);
+            createBasicStructure();
 
             assertThrows(IllegalArgumentException.class,
                     () -> fs.create("Folder", "folder@home", "C"));
@@ -324,7 +324,7 @@ public class FileSystemIntegrationTest extends BaseFileSystemTest {
 
         @Test
         void create_withMultipleDots_shouldThrowException() {
-            fs.create("Drive", "C", null);
+            createBasicStructure();
 
             assertThrows(IllegalArgumentException.class,
                     () -> fs.create("TextFile", "file.backup.txt", "C"));

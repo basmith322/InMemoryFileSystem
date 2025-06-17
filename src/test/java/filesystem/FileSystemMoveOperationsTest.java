@@ -8,9 +8,9 @@ public class FileSystemMoveOperationsTest extends BaseFileSystemTest {
 
     @Test
     void moveFolder_betweenDrives_shouldSucceed() {
-        fs.create("Drive", "C", null);
+        createBasicStructure();
         fs.create("Drive", "D", null);
-        fs.create("Folder", "Documents", "C");
+        
 
         fs.move("C\\Documents", "D");
 
@@ -20,8 +20,8 @@ public class FileSystemMoveOperationsTest extends BaseFileSystemTest {
 
     @Test
     void moveFile_toFolder_shouldSucceed() {
-        fs.create("Drive", "C", null);
-        fs.create("Folder", "Documents", "C");
+        createBasicStructure();
+        
         fs.create("Folder", "Backup", "C");
         fs.create("TextFile", "note.txt", "C\\Documents");
 
@@ -33,7 +33,7 @@ public class FileSystemMoveOperationsTest extends BaseFileSystemTest {
 
     @Test
     void moveDrive_shouldThrowException() {
-        fs.create("Drive", "C", null);
+        createBasicStructure();
         fs.create("Drive", "D", null);
 
         assertThrows(IllegalArgumentException.class,
@@ -42,8 +42,8 @@ public class FileSystemMoveOperationsTest extends BaseFileSystemTest {
 
     @Test
     void move_toNonexistentDestination_shouldThrowException() {
-        fs.create("Drive", "C", null);
-        fs.create("Folder", "Documents", "C");
+        createBasicStructure();
+        
 
         assertThrows(IllegalArgumentException.class,
                 () -> fs.move("C\\Documents", "D"));
@@ -51,7 +51,7 @@ public class FileSystemMoveOperationsTest extends BaseFileSystemTest {
 
     @Test
     void move_nonexistentSource_shouldThrowException() {
-        fs.create("Drive", "C", null);
+        createBasicStructure();
 
         assertThrows(IllegalArgumentException.class,
                 () -> fs.move("C\\Documents", "C"));

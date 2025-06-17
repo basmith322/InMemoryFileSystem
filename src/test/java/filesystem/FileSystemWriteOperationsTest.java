@@ -10,7 +10,7 @@ public class FileSystemWriteOperationsTest extends BaseFileSystemTest {
 
     @Test
     void writeToFile_shouldSucceed() {
-        fs.create("Drive", "C", null);
+        createBasicStructure();
         fs.create("TextFile", "note.txt", "C");
 
         fs.writeToFile("C\\note.txt", "Hello, World!");
@@ -21,7 +21,7 @@ public class FileSystemWriteOperationsTest extends BaseFileSystemTest {
 
     @Test
     void writeToFile_nonexistentFile_shouldThrowException() {
-        fs.create("Drive", "C", null);
+        createBasicStructure();
 
         assertThrows(IllegalArgumentException.class,
                 () -> fs.writeToFile("C\\note.txt", "Hello"));
@@ -29,8 +29,8 @@ public class FileSystemWriteOperationsTest extends BaseFileSystemTest {
 
     @Test
     void writeToFile_toNonTextFile_shouldThrowException() {
-        fs.create("Drive", "C", null);
-        fs.create("Folder", "Documents", "C");
+        createBasicStructure();
+        
 
         assertThrows(IllegalArgumentException.class,
                 () -> fs.writeToFile("C\\Documents", "Hello"));

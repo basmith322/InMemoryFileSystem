@@ -21,7 +21,7 @@ public class FileSystemCreateOperationsTest extends BaseFileSystemTest {
 
     @Test
     void createDrive_withExistingName_shouldThrowException() {
-        fs.create("Drive", "C", null);
+        createBasicStructure();
 
         IllegalArgumentException exception = assertThrows(
                 IllegalArgumentException.class,
@@ -32,8 +32,8 @@ public class FileSystemCreateOperationsTest extends BaseFileSystemTest {
 
     @Test
     void createFolder_inDrive_shouldSucceed() {
-        fs.create("Drive", "C", null);
-        fs.create("Folder", "Documents", "C");
+        createBasicStructure();
+        
 
         Drive drive = fs.findDrive("C");
         assertNotNull(drive.getEntity("Documents"));
@@ -43,8 +43,8 @@ public class FileSystemCreateOperationsTest extends BaseFileSystemTest {
 
     @Test
     void createTextFile_inFolder_shouldSucceed() {
-        fs.create("Drive", "C", null);
-        fs.create("Folder", "Documents", "C");
+        createBasicStructure();
+        
         fs.create("TextFile", "note.txt", "C\\Documents");
 
         FileSystemEntity file = fs.findEntity("C\\Documents\\note.txt");
@@ -56,8 +56,8 @@ public class FileSystemCreateOperationsTest extends BaseFileSystemTest {
 
     @Test
     void createZipFile_inFolder_shouldSucceed() {
-        fs.create("Drive", "C", null);
-        fs.create("Folder", "Documents", "C");
+        createBasicStructure();
+        
         fs.create("ZipFile", "archive.zip", "C\\Documents");
 
         FileSystemEntity zipFile = fs.findEntity("C\\Documents\\archive.zip");
@@ -74,8 +74,8 @@ public class FileSystemCreateOperationsTest extends BaseFileSystemTest {
 
     @Test
     void createEntity_withDuplicateName_shouldThrowException() {
-        fs.create("Drive", "C", null);
-        fs.create("Folder", "Documents", "C");
+        createBasicStructure();
+        
 
         assertThrows(IllegalArgumentException.class,
                 () -> fs.create("Folder", "Documents", "C"));
@@ -83,7 +83,7 @@ public class FileSystemCreateOperationsTest extends BaseFileSystemTest {
 
     @Test
     void createEntity_inTextFile_shouldThrowException() {
-        fs.create("Drive", "C", null);
+        createBasicStructure();
         fs.create("TextFile", "note.txt", "C");
 
         assertThrows(IllegalArgumentException.class,
@@ -92,7 +92,7 @@ public class FileSystemCreateOperationsTest extends BaseFileSystemTest {
 
     @Test
     void addEntity_directCall_withDuplicateName_shouldThrowException() {
-        fs.create("Drive", "C", null);
+        createBasicStructure();
         Drive drive = fs.findDrive("C");
 
         TextFile file1 = new TextFile("duplicate.txt");
